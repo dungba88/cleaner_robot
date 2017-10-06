@@ -43,7 +43,6 @@ def main():
         robot = Robot(matrix, start_position, start_direction)
         sweeper = Sweeper(robot)
         sweeper.loggable = False
-        robot.loggable = False
 
         robot.log()
 

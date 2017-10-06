@@ -17,7 +17,7 @@ def main():
     robot.loggable = False
     steps = sweeper.sweep()
 
-    print('average steps: %d' % steps)
+    print('steps taken: %d' % steps)
     sweeper.print_map()
 
 if __name__ == '__main__':

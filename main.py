@@ -37,6 +37,7 @@ def main():
 
     total_elapsed = 0
     total_steps = 0
+    total_turns = 0
 
     for i in range(no_matrix):
         matrix, start_position = random_matrix(no_rows, no_cols, no_obs)
@@ -44,20 +45,27 @@ def main():
         robot = Robot(matrix, start_position, start_direction)
         sweeper = Sweeper(robot)
         sweeper.loggable = False
+        sweeper.favor_move = False
 
         robot.log()
 
         import time
-        start = time.time()
-        steps = sweeper.sweep()
-        elapsed = time.time() - start
-        total_elapsed += elapsed
-        total_steps += steps
 
-        print('steps taken: %d, time taken: %.2fms' % (steps, elapsed * 1000))
+        start = time.time()
+        sweeper.sweep()
+        elapsed = time.time() - start
+
+        total_elapsed += elapsed
+        total_steps += robot.move_count
+        total_turns += robot.turn_count
+
+        print('steps taken: %d, turns taken: %d, time taken: %.2fms'
+              % (robot.move_count, robot.turn_count, elapsed * 1000))
+
         sweeper.print_map()
 
-    print('average steps taken: %d, time taken: %.2fms' % (int(total_steps / no_matrix), total_elapsed * 1000 / no_matrix))
+    print('average steps taken: %d, turns taken: %d, time taken: %.2fms'
+         % (int(total_steps / no_matrix), int(total_turns / no_matrix), total_elapsed * 1000 / no_matrix))
 
 if __name__ == '__main__':
     main()

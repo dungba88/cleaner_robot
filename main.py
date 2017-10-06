@@ -15,9 +15,13 @@ def main():
     sweeper = Sweeper(robot)
     sweeper.loggable = False
     robot.loggable = False
-    steps = sweeper.sweep()
 
-    print('steps taken: %d' % steps)
+    import time
+    start = time.time()
+    steps = sweeper.sweep()
+    elapsed = time.time() - start
+
+    print('steps taken: %d, time taken: %.2fms' % (steps, elapsed * 1000))
     sweeper.print_map()
 
 if __name__ == '__main__':

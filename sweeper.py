@@ -4,25 +4,22 @@ class Sweeper(object):
     def __init__(self, robot):
         self.current_direction = 0
         self.current_position = {'x': 0, 'y': 0}
-        self.count = 0
         self.observed_map = {0: {0: 1}}
         self.robot = robot
         self.loggable = True
+        self.favor_move = True
 
     def sweep(self):
-        self.count = 0
         self.observed_map = {0: {0: 1}}
 
         while True:
             if self.move():
                 break
 
-        return self.count
-
     def move(self):
-        # self.move_robot()
-        if self.move_robot():
-            return False
+        if self.favor_move:
+            if self.move_robot():
+                return False
 
         self.log('cant move, looking for nearest unvisited position')
         target_path = self.find_nearest_unvisited_pos()
@@ -57,7 +54,6 @@ class Sweeper(object):
             self.observed_map[next_pos['y']] = {}
 
         if self.robot.move():
-            self.count += 1
             self.observed_map[next_pos['y']][next_pos['x']] = 1
             self.current_position = next_pos
             if self.loggable:
@@ -109,9 +105,11 @@ class Sweeper(object):
         for path in reversed(target_path):
             left_turns = path - self.current_direction
             if left_turns < 0:
-                left_turns = left_turns + 4
-            for i in range(left_turns):
-                self.turn_robot_left()
+                for _ in range(abs(left_turns)):
+                    self.turn_robot_right()
+            else:
+                for _ in range(left_turns):
+                    self.turn_robot_left()
             self.move_robot()
 
     def print_map(self):

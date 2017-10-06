@@ -12,10 +12,13 @@ def main():
     start_direction = 1
 
     robot = Robot(matrix, start_position, start_direction)
+    sweeper = Sweeper(robot)
+    sweeper.loggable = False
     robot.loggable = False
-    steps = Sweeper(robot).sweep()
+    steps = sweeper.sweep()
 
     print('average steps: %d' % steps)
+    sweeper.print_map()
 
 if __name__ == '__main__':
     main()

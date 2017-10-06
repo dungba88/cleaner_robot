@@ -7,6 +7,7 @@ class Sweeper(object):
         self.count = 0
         self.observed_map = {0: {0: 1}}
         self.robot = robot
+        self.loggable = True
 
     def sweep(self):
         self.count = 0
@@ -22,14 +23,18 @@ class Sweeper(object):
         if self.move_robot():
             return False
 
-        # print('cant move, looking for nearest unvisited position')
+        self.log('cant move, looking for nearest unvisited position')
         target_path = self.find_nearest_unvisited_pos()
         if not target_path:
-            print('cannot find nearest unvisited position, cleaned')
+            self.log('cannot find nearest unvisited position, cleaned')
             return True
-        print('found nearest unvisited position, moving there')
+        self.log('found nearest unvisited position, moving there')
         self.move_with_path(target_path)
         return False
+
+    def log(self, text):
+        if self.loggable:
+            print(text)
 
     def calculate_next_pos(self):
         next_pos_x = self.current_position['x'] + cos(self.current_direction)
@@ -54,10 +59,12 @@ class Sweeper(object):
             self.count += 1
             self.observed_map[next_pos['y']][next_pos['x']] = 1
             self.current_position = next_pos
-            self.print_map()
+            if self.loggable:
+                self.print_map()
             return True
         self.observed_map[next_pos['y']][next_pos['x']] = -1
-        self.print_map()
+        if self.loggable:
+            self.print_map()
         return False
 
     def find_nearest_unvisited_pos(self):

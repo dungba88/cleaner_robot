@@ -52,36 +52,6 @@ class Sweeper(object):
         self.move_with_path(target_path)
         return False
 
-    def print_map(self):
-        min_y = min(self.observed_map)
-        min_dict_x = min(self.observed_map, key=self.get_min_x)
-        min_x = min(self.observed_map[min_dict_x])
-        max_y = max(self.observed_map)
-        max_dict_x = max(self.observed_map, key=self.get_max_x)
-        max_x = max(self.observed_map[max_dict_x])
-
-        for i in range(min_y, max_y + 1):
-            text = ""
-            for j in range(min_x, max_x + 1):
-                item = self.observed_map[i].get(j, None)
-                if self.current_position['x'] == j \
-                        and self.current_position['y'] == i:
-                    text += 'o'
-                elif not item:
-                    text += ' '
-                elif item == 1:
-                    text += '*'
-                else:
-                    text += '|'
-            print(text)
-        print('')
-
-    def get_min_x(self, x):
-        return min(self.observed_map[x])
-
-    def get_max_x(self, x):
-        return max(self.observed_map[x])
-
     def calculate_next_pos(self):
         next_pos_x = self.current_position['x'] + cos(self.current_direction)
         next_pos_y = self.current_position['y'] - sin(self.current_direction)
@@ -157,8 +127,35 @@ class Sweeper(object):
                 self.turn_robot_left()
             self.move_robot()
 
-def get_max_x(my_dict, x):
-    return max(my_dict[x])
+    def print_map(self):
+        min_y = min(self.observed_map)
+        min_dict_x = min(self.observed_map, key=self.get_min_x)
+        min_x = min(self.observed_map[min_dict_x])
+        max_y = max(self.observed_map)
+        max_dict_x = max(self.observed_map, key=self.get_max_x)
+        max_x = max(self.observed_map[max_dict_x])
+
+        for i in range(min_y, max_y + 1):
+            text = ""
+            for j in range(min_x, max_x + 1):
+                item = self.observed_map[i].get(j, None)
+                if self.current_position['x'] == j \
+                        and self.current_position['y'] == i:
+                    text += 'o'
+                elif not item:
+                    text += ' '
+                elif item == 1:
+                    text += '*'
+                else:
+                    text += '|'
+            print(text)
+        print('')
+
+    def get_min_x(self, x):
+        return min(self.observed_map[x])
+
+    def get_max_x(self, x):
+        return max(self.observed_map[x])
 
 if __name__ == '__main__':
     main()

@@ -101,11 +101,11 @@ class Sweeper(object):
         for path in reversed(target_path):
             left_turns = path - self.current_direction
             # we don't need this, but in reality turning is costly
-            if left_turns == -1 or left_turns == 3:
+            if left_turns < 0:
+                left_turns += 4
+            if left_turns == 3:
                 self.turn_robot_right()
             else:
-                if left_turns < 0:
-                    left_turns += 4
                 for _ in range(left_turns):
                     self.turn_robot_left()
             self.move_robot()

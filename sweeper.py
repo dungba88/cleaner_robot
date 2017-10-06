@@ -2,33 +2,27 @@ from utils import sin, cos
 
 class Sweeper(object):
     def __init__(self, robot):
-        self.current_direction = 0
+        self.current_direction = 0 # can be from 0 to 3, mapped to 0-270 degrees
         self.current_position = {'x': 0, 'y': 0}
         self.observed_map = {0: {0: 1}}
         self.robot = robot
         self.loggable = True
-        self.favor_move = True
 
     def sweep(self):
         self.observed_map = {0: {0: 1}}
 
-        while True:
-            if self.move():
-                break
+        while self.move():
+            pass
 
     def move(self):
-        if self.favor_move:
-            if self.move_robot():
-                return False
-
-        self.log('cant move, looking for nearest unvisited position')
+        self.log('looking for nearest unvisited position')
         target_path = self.find_nearest_unvisited_pos()
         if not target_path:
             self.log('cannot find nearest unvisited position, cleaned')
-            return True
+            return False
         self.log('found nearest unvisited position, moving there')
         self.move_with_path(target_path)
-        return False
+        return True
 
     def log(self, text):
         if self.loggable:
@@ -54,11 +48,13 @@ class Sweeper(object):
             self.observed_map[next_pos['y']] = {}
 
         if self.robot.move():
+            # mark the point as visited
             self.observed_map[next_pos['y']][next_pos['x']] = 1
             self.current_position = next_pos
             if self.loggable:
                 self.print_map()
             return True
+        # mark the point as inaccessible
         self.observed_map[next_pos['y']][next_pos['x']] = -1
         if self.loggable:
             self.print_map()
@@ -104,6 +100,7 @@ class Sweeper(object):
     def move_with_path(self, target_path):
         for path in reversed(target_path):
             left_turns = path - self.current_direction
+            # we don't need this, but im reality turning is costly
             if left_turns < 0:
                 for _ in range(abs(left_turns)):
                     self.turn_robot_right()

@@ -45,7 +45,6 @@ def main():
         robot = Robot(matrix, start_position, start_direction)
         sweeper = Sweeper(robot)
         sweeper.loggable = False
-        sweeper.favor_move = False
 
         robot.log()
 

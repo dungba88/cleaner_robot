@@ -100,7 +100,7 @@ class Sweeper(object):
     def move_with_path(self, target_path):
         for path in reversed(target_path):
             left_turns = path - self.current_direction
-            # we don't need this, but im reality turning is costly
+            # we don't need this, but in reality turning is costly
             if left_turns < 0:
                 for _ in range(abs(left_turns)):
                     self.turn_robot_right()

@@ -1,6 +1,7 @@
+import random
+
 from robot import Robot
 from sweeper import Sweeper
-import random
 
 def random_matrix(no_rows, no_cols, no_obs):
     arr = []

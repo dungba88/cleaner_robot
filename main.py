@@ -35,6 +35,7 @@ def main():
     no_matrix = 10
 
     total_elapsed = 0
+    total_steps = 0
 
     for i in range(no_matrix):
         matrix, start_position = random_matrix(no_rows, no_cols, no_obs)
@@ -51,11 +52,12 @@ def main():
         steps = sweeper.sweep()
         elapsed = time.time() - start
         total_elapsed += elapsed
+        total_steps += steps
 
         print('steps taken: %d, time taken: %.2fms' % (steps, elapsed * 1000))
         sweeper.print_map()
 
-    print('average elapsed time taken: %.2fms' % (total_elapsed * 1000 / no_matrix))
+    print('average step taken: %d, time taken: %.2fms' % (int(total_steps / no_matrix), total_elapsed * 1000 / no_matrix))
 
 if __name__ == '__main__':
     main()

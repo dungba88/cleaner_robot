@@ -20,9 +20,9 @@ class Sweeper(object):
         return self.count
 
     def move(self):
-        self.move_robot()
-        #if self.move_robot():
-        #    return False
+        # self.move_robot()
+        if self.move_robot():
+            return False
 
         self.log('cant move, looking for nearest unvisited position')
         target_path = self.find_nearest_unvisited_pos()

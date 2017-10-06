@@ -7,14 +7,18 @@ class Robot(object):
         self.current_position = start_position
         self.current_direction = start_direction
         self.__visited_position = {str(start_position['x']) + '_' + str(start_position['y']): 1}
+        self.move_count = 0
+        self.turn_count = 0
 
     def turn_left(self):
         """turn 90 degree counter-clockwise"""
         self.current_direction = (self.current_direction + 1) % 4
+        self.turn_count += 1
 
     def turn_right(self):
         """turn 90 degree clockwise"""
         self.current_direction = (self.current_direction + 3) % 4
+        self.turn_count += 1
 
     def move(self):
         """move ahead"""
@@ -23,6 +27,7 @@ class Robot(object):
         if not self.__can_move(next_pos_x, next_pos_y):
             self.__visited_position[str(next_pos_x) + "_" + str(next_pos_y)] = -1
             return False
+        self.move_count += 1
         self.current_position['x'] = next_pos_x
         self.current_position['y'] = next_pos_y
         self.__visited_position[str(next_pos_x) + "_" + str(next_pos_y)] = 1

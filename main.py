@@ -57,7 +57,7 @@ def main():
         print('steps taken: %d, time taken: %.2fms' % (steps, elapsed * 1000))
         sweeper.print_map()
 
-    print('average step taken: %d, time taken: %.2fms' % (int(total_steps / no_matrix), total_elapsed * 1000 / no_matrix))
+    print('average steps taken: %d, time taken: %.2fms' % (int(total_steps / no_matrix), total_elapsed * 1000 / no_matrix))
 
 if __name__ == '__main__':
     main()

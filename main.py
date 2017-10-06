@@ -1,28 +1,61 @@
 from robot import Robot
 from sweeper import Sweeper
+import random
+
+def random_matrix(no_rows, no_cols, no_obs):
+    arr = []
+    for i in range(no_rows * no_cols):
+        if i < no_obs:
+            arr.append(1)
+        else:
+            arr.append(0)
+
+    random.shuffle(arr)
+
+    start_position = {'x': 0, 'y': 0}
+    rand_pos = random.randint(0, no_rows * no_cols - no_obs - 1)
+
+    matrix = []
+    count = 0
+    for i in range(no_rows):
+        row = []
+        for j in range(no_cols):
+            row.append(arr[i * no_cols + j])
+            if arr[j] == 0:
+                if count == rand_pos:
+                    start_position = {'x': j, 'y': i}
+                count += 1
+        matrix.append(row)
+    return matrix, start_position
 
 def main():
-    matrix = [
-        [0, 0, 0, 1, 1],
-        [0, 0, 0, 0, 1],
-        [0, 0, 0, 1, 0],
-        [0, 1, 0, 0, 0]
-    ]
-    start_position = {'x': 0, 'y': 1}
-    start_direction = 1
+    no_rows = 10
+    no_cols = 9
+    no_obs = 10
+    no_matrix = 10
 
-    robot = Robot(matrix, start_position, start_direction)
-    sweeper = Sweeper(robot)
-    sweeper.loggable = False
-    robot.loggable = False
+    total_elapsed = 0
 
-    import time
-    start = time.time()
-    steps = sweeper.sweep()
-    elapsed = time.time() - start
+    for i in range(no_matrix):
+        matrix, start_position = random_matrix(no_rows, no_cols, no_obs)
+        start_direction = random.randint(0, 3)
+        robot = Robot(matrix, start_position, start_direction)
+        sweeper = Sweeper(robot)
+        sweeper.loggable = False
+        robot.loggable = False
 
-    print('steps taken: %d, time taken: %.2fms' % (steps, elapsed * 1000))
-    sweeper.print_map()
+        robot.log()
+
+        import time
+        start = time.time()
+        steps = sweeper.sweep()
+        elapsed = time.time() - start
+        total_elapsed += elapsed
+
+        print('steps taken: %d, time taken: %.2fms' % (steps, elapsed * 1000))
+        sweeper.print_map()
+
+    print('average elapsed time taken: %.2fms' % (total_elapsed * 1000 / no_matrix))
 
 if __name__ == '__main__':
     main()

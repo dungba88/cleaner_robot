@@ -6,7 +6,6 @@ class Robot(object):
         self.matrix = matrix
         self.current_position = start_position
         self.current_direction = start_direction
-        self.loggable = True
         self.__visited_position = {str(start_position['x']) + '_' + str(start_position['y']): 1}
 
     def turn_left(self):
@@ -39,9 +38,6 @@ class Robot(object):
         return self.matrix[next_pos_y][next_pos_x] == 0
 
     def log(self):
-        if not self.loggable:
-            return
-
         for i in range(len(self.matrix)):
             text = ""
             for j in range(len(self.matrix[i])):

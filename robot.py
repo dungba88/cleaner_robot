@@ -38,15 +38,6 @@ class Robot(object):
             return False
         return self.matrix[next_pos_y][next_pos_x] == 0
 
-    def is_finish(self):
-        for i in range(len(self.matrix)):
-            for j in range(len(self.matrix[i])):
-                if self.matrix[i][j] == 0:
-                    if self.__visited_position.get(str(j) + "_" + str(i), None) != 1:
-                        return False
-
-        return True
-
     def log(self):
         if not self.loggable:
             return

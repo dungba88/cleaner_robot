@@ -1,25 +1,4 @@
-from robot import Robot
 from utils import sin, cos
-
-def main():
-    matrix = [
-        [0, 0, 0, 1, 1],
-        [0, 0, 1, 0, 1],
-        [0, 0, 0, 1, 0],
-        [0, 1, 0, 0, 0]
-    ]
-    start_position = {'x': 0, 'y': 1}
-    start_direction = 0
-
-    iterations = 1
-    total = 0
-
-    for i in range(iterations):
-        robot = Robot(matrix, start_position, start_direction)
-        robot.loggable = False
-        total += Sweeper(robot).sweep()
-
-    print('average steps: %d' % int(total / iterations))
 
 class Sweeper(object):
     def __init__(self, robot):
@@ -43,7 +22,7 @@ class Sweeper(object):
         if self.move_robot():
             return False
 
-        print('cant move, looking for nearest unvisited position')
+        # print('cant move, looking for nearest unvisited position')
         target_path = self.find_nearest_unvisited_pos()
         if not target_path:
             print('cannot find nearest unvisited position, cleaned')
@@ -67,12 +46,12 @@ class Sweeper(object):
 
     def move_robot(self):
         next_pos = self.calculate_next_pos()
-        self.count += 1
 
         if not self.observed_map.get(next_pos['y'], None):
             self.observed_map[next_pos['y']] = {}
 
         if self.robot.move():
+            self.count += 1
             self.observed_map[next_pos['y']][next_pos['x']] = 1
             self.current_position = next_pos
             self.print_map()
@@ -156,6 +135,3 @@ class Sweeper(object):
 
     def get_max_x(self, x):
         return max(self.observed_map[x])
-
-if __name__ == '__main__':
-    main()

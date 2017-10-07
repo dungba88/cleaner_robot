@@ -4,7 +4,7 @@ class Robot(object):
 
     def __init__(self, matrix, start_position, start_direction):
         self.matrix = matrix
-        self.current_position = start_position
+        self.current_position = {'x': start_position['x'], 'y': start_position['y']}
         self.current_direction = start_direction
         self.__visited_position = {str(start_position['x']) + '_' + str(start_position['y']): 1}
         self.move_count = 0

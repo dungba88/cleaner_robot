@@ -9,6 +9,7 @@ class Robot(object):
         self.__visited_position = {str(start_position['x']) + '_' + str(start_position['y']): 1}
         self.move_count = 0
         self.turn_count = 0
+        self.loggable = False
 
     def turn_left(self):
         """turn 90 degree counter-clockwise"""
@@ -33,6 +34,8 @@ class Robot(object):
         self.current_position['x'] = next_pos_x
         self.current_position['y'] = next_pos_y
         self.__visited_position[str(next_pos_x) + "_" + str(next_pos_y)] = 1
+        if self.loggable:
+            self.log()
         return True
 
     def __can_move(self, next_pos_x, next_pos_y):

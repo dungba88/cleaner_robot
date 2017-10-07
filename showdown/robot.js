@@ -215,7 +215,6 @@ class Sweeper {
         }
         this.log('found nearest unvisited position, moving there');
         this.update_target(target_path.current);
-        console.log(target_path.current.x, target_path.current.y);
         this.move_with_path(target_path.path, success);
         return true;
     }

@@ -3,7 +3,6 @@ class DFSSweeper(object):
         self.observed_map = {}
         self.robot = robot
         self.loggable = True
-        self.count = 0
 
     def sweep(self):
         self.move({'x': 0, 'y': 0}, 0)
@@ -12,8 +11,7 @@ class DFSSweeper(object):
         self.observed_map[str(cur['x'])+'_'+str(cur['y'])] = 1
         straight = self.next_straight(cur, dir)
         if not self.visited(straight) and self.robot.move():
-            if self.robot.move():
-                self.move(straight, dir)
+            self.move(straight, dir)
 
         right = self.next_right(cur, dir)
         self.robot.turn_right()

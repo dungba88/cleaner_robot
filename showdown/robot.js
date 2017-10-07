@@ -110,6 +110,7 @@ class Robot {
         this.matrix = matrix;
         this.start_position = {x: start_position.x, y: start_position.y};
         this.current_position = {x: start_position.x, y: start_position.y};
+        this.start_direction = start_direction;
         this.current_direction = start_direction;
         this.loggable = false;
         this.app = app;
@@ -220,7 +221,23 @@ class Sweeper {
     }
 
     update_target(current) {
-        this.robot.app.update_target({x: current.x + this.robot.start_position.x, y: current.y + this.robot.start_position.y});
+        let _current = {x: current.x, y: current.y};
+        if (this.robot.start_direction == 1) {
+            let tmp = _current.x;
+            _current.x = _current.y;
+            _current.y = -tmp;
+        } else if (this.robot.start_direction == 2) {
+            _current.x = -_current.x;
+            _current.y = -_current.y;
+        } else if (this.robot.start_direction == 3) {
+            let tmp = _current.x;
+            _current.x = -_current.y;
+            _current.y = tmp;
+        }
+        this.robot.app.update_target({
+            x: _current.x + this.robot.start_position.x,
+            y: _current.y + this.robot.start_position.y
+        });
     }
 
     find_nearest_unvisited_pos() {

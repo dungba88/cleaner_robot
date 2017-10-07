@@ -50,11 +50,11 @@
         let input = random_matrix(ROWS, COLS, OBSTACLES);
 
         app1.begin();
-        robot1 = new Robot(input.matrix, input.start_position, random_int(3), app1);
+        robot1 = new Robot(input.matrix, input.start_position, 3, app1);
         app1.draw_obstacle(input.matrix);
 
         app2.begin();
-        robot2 = new Robot(input.matrix, input.start_position, random_int(3), app2);
+        robot2 = new Robot(input.matrix, input.start_position, 3, app2);
         app2.draw_obstacle(input.matrix);
     });
 

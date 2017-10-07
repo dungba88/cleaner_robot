@@ -17,21 +17,19 @@ class DFSSweeper(object):
         self.robot.turn_right()
         if not self.visited(right) and self.robot.move():
             self.move(right, (dir + 1) % 4)
-            self.robot.turn_left()
-
-        left = self.next_left(cur, dir)
-        self.robot.turn_left()
-        if not self.visited(left) and self.robot.move():
-            self.move(left, (dir + 3) % 4)
-            self.robot.turn_right()
 
         down = self.next_down(cur, dir)
-        self.robot.turn_left().turn_left()
+        self.robot.turn_right()
         if not self.visited(down) and self.robot.move():
             self.move(down, (dir + 2) % 4)
             self.robot.turn_left().turn_left()
 
-        self.robot.turn_left().turn_left()
+        left = self.next_left(cur, dir)
+        self.robot.turn_right()
+        if not self.visited(left) and self.robot.move():
+            self.move(left, (dir + 3) % 4)
+
+        self.robot.turn_left()
         self.robot.move()
         self.robot.turn_left().turn_left()
 

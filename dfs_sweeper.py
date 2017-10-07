@@ -13,22 +13,38 @@ class DFSSweeper(object):
         if not self.visited(straight) and self.robot.move():
             self.move(straight, dir)
 
+        turn_taken = 0
+
         right = self.next_right(cur, dir)
-        self.robot.turn_right()
-        if not self.visited(right) and self.robot.move():
-            self.move(right, (dir + 1) % 4)
+        if not self.visited(right):
+            self.robot.turn_right()
+            turn_taken += 1
+            if self.robot.move():
+                self.move(right, (dir + 1) % 4)
 
         down = self.next_down(cur, dir)
-        self.robot.turn_right()
-        if not self.visited(down) and self.robot.move():
-            self.move(down, (dir + 2) % 4)
+        if not self.visited(down):
+            for _ in range(2 - turn_taken):
+                self.robot.turn_right()
+                turn_taken += 1
+            if self.robot.move():
+                self.move(down, (dir + 2) % 4)
 
         left = self.next_left(cur, dir)
-        self.robot.turn_right()
-        if not self.visited(left) and self.robot.move():
-            self.move(left, (dir + 3) % 4)
+        if not self.visited(left):
+            for _ in range(3 - turn_taken):
+                self.robot.turn_right()
+                turn_taken += 1
+            if self.robot.move():
+                self.move(left, (dir + 3) % 4)
 
-        self.robot.turn_left()
+        left_turns = turn_taken - 2
+        if left_turns < 0:
+            for _ in range(abs(left_turns)):
+                self.robot.turn_right()
+        else:
+            for _ in range(left_turns):
+                self.robot.turn_left()
         self.robot.move()
         self.robot.turn_left().turn_left()
 

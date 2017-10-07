@@ -33,7 +33,6 @@ class Robot(object):
         self.current_position['x'] = next_pos_x
         self.current_position['y'] = next_pos_y
         self.__visited_position[str(next_pos_x) + "_" + str(next_pos_y)] = 1
-        self.log()
         return True
 
     def __can_move(self, next_pos_x, next_pos_y):

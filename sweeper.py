@@ -1,4 +1,4 @@
-from utils import sin, cos
+from utils import sin, cos, bfs
 
 class Sweeper(object):
     def __init__(self, robot):
@@ -25,41 +25,21 @@ class Sweeper(object):
         return True
 
     def find_nearest_unvisited_pos(self):
-        # this is just simple BFS implementation
-        checked = {}
-        queue = []
-        queue.append({'x': self.current_position['x'], 'y': self.current_position['y'], 'd': None, 'parent': None})
+        return bfs(self.current_position, self.node_unvisited, self.adjacent_movable)
 
-        while queue:
-            current = queue.pop(0)
-            map_node = self.get_node_from_map(current)
-            if not map_node:
-                path = []
-                while current['parent']:
-                    path.append(current['d'])
-                    current = current['parent']
-                return path
-            for node in self.adjacent(current):
-                key = str(node['x']) + '_' + str(node['y'])
-                map_node = self.get_node_from_map(node)
-                if not checked.get(key, None) \
-                        and map_node != -1:
-                    checked[key] = 1
-                    queue.append(node)
+    def node_unvisited(self, node):
+        map_node = self.get_node_from_map(node)
+        return map_node is None
+
+    def adjacent_movable(self, node):
+        map_node = self.get_node_from_map(node)
+        return map_node != -1
 
     def get_node_from_map(self, node):
         if not node['y'] in self.observed_map \
                 or not node['x'] in self.observed_map[node['y']]:
             return None
         return self.observed_map[node['y']][node['x']]
-
-    def adjacent(self, current):
-        return [
-            {'x': current['x'] + 1, 'y': current['y'], 'd': 0, 'parent': current},
-            {'x': current['x'], 'y': current['y'] + 1, 'd': 3, 'parent': current},
-            {'x': current['x'] - 1, 'y': current['y'], 'd': 2, 'parent': current},
-            {'x': current['x'], 'y': current['y'] - 1, 'd': 1, 'parent': current}
-        ]
 
     def move_with_path(self, target_path):
         for path in reversed(target_path):

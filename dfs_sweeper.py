@@ -1,14 +1,12 @@
 class DFSSweeper(object):
     def __init__(self, robot):
-        self.current_direction = 0 # can be from 0 to 3, mapped to 0-270 degrees
-        self.current_position = {'x': 0, 'y': 0}
         self.observed_map = {}
         self.robot = robot
         self.loggable = True
         self.count = 0
 
     def sweep(self):
-        self.move(self.current_position, 0)
+        self.move({'x': 0, 'y': 0}, 0)
 
     def move(self, cur, dir):
         self.observed_map[str(cur['x'])+'_'+str(cur['y'])] = 1

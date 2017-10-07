@@ -46,4 +46,4 @@ class DFSSweeper(object):
         return {'x': cur['x'] + ((dir + 1) % 2) * (dir - 1), 'y': cur['y'] + (dir % 2) * (dir - 2)}
 
     def visited(self, node):
-        return self.observed_map.get(str(node['x'])+'_'+str(node['y']), None) is not None
+        return (str(node['x'])+'_'+str(node['y'])) in self.observed_map

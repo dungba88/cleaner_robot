@@ -22,7 +22,6 @@ class DFSSweeper(object):
         self.robot.turn_right()
         if not self.visited(down) and self.robot.move():
             self.move(down, (dir + 2) % 4)
-            self.robot.turn_left().turn_left()
 
         left = self.next_left(cur, dir)
         self.robot.turn_right()

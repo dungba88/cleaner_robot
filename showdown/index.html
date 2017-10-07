@@ -1,0 +1,141 @@
+<link rel="stylesheet" type="text/css" href="style.css">
+
+<h1>
+    Cleaning Robot Showdown
+</h1>
+
+<div>
+    <button id="btn_run" onclick="run()">Run</button>        
+</div>
+
+<h2>
+    Winner: <span id="winner"></span>
+</h2>
+
+<h3>
+    Runner up: <span id="runner_up"></span>
+</h3>
+    
+<div class="container">
+    <div id="pointer1" class="pointer"></div>
+    <canvas id="canvas1" width="400px" height="300px"></canvas>
+    <div class="fighter">Planned BFS</div>
+</div>
+
+<div class="container">
+    <div id="pointer2" class="pointer"></div>
+    <canvas id="canvas2" width="400px" height="300px"></canvas>
+    <div class="fighter">Backtracking DFS</div>
+</div>
+
+<script src="robot.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+    ROWS = 10;
+    COLS = 10;
+    OBSTACLES = 10;
+
+    let app1 = new Application(ROWS, COLS, OBSTACLES, 'canvas1', 'pointer1');
+
+    let app2 = new Application(ROWS, COLS, OBSTACLES, 'canvas2', 'pointer2');
+
+    let robot1 = null;
+    let robot2 = null;
+
+    document.addEventListener("DOMContentLoaded", function(event) {
+        app1.load_app();
+        app2.load_app();
+
+        let input = random_matrix(ROWS, COLS, OBSTACLES);
+
+        app1.begin();
+        robot1 = new Robot(input.matrix, input.start_position, random_int(3), app1);
+        app1.draw_obstacle(input.matrix);
+
+        app2.begin();
+        robot2 = new Robot(input.matrix, input.start_position, random_int(3), app2);
+        app2.draw_obstacle(input.matrix);
+    });
+
+    function run() {
+        document.getElementById('btn_run').disabled = true;
+
+        let sweeper1 = new Sweeper(robot1);
+        let sweeper2 = new DFSSweeper(robot2);
+
+        let app1Finished = false;
+        let app2Finished = false;
+        sweeper1.sweep(function() {
+            app1Finished = true;
+            if (!app2Finished) {
+                document.getElementById('winner').innerHTML = 'Planned BFS' + '. Steps taken: ' + robot1.move_count;
+            } else {
+                document.getElementById('runner_up').innerHTML = 'Planned BFS' + '. Steps taken: ' + robot1.move_count;
+            }
+            app1.finish();
+        });
+
+        sweeper2.sweep(function() {
+            app2Finished = true;
+            if (!app1Finished) {
+                document.getElementById('winner').innerHTML = 'Backtracking DFS' + '. Steps taken: ' + robot2.move_count;
+            } else {
+                document.getElementById('runner_up').innerHTML = 'Backtracking DFS' + '. Steps taken: ' + robot2.move_count;
+            }
+            app2.finish();
+        });
+    }
+
+    function random_matrix(no_rows, no_cols, no_obs) {
+        let arr = [];
+        for (let i = 0; i < no_rows * no_cols; i++) {
+            arr.push(i < no_obs ? 1 : 0);
+        }
+
+        shuffle(arr);
+
+        let start_position = {x: 0, y: 0};
+        let rand_pos = random_int(no_rows * no_cols - no_obs - 1);
+
+        let matrix = [];
+        let count = 0;
+        for(let i = 0; i < no_rows; i++) {
+            let row = [];
+            for(let j = 0; j < no_cols; j++) {
+                let item = arr[i * no_cols + j];
+                row.push(item);
+                if(item == 0) {
+                    if (count == rand_pos)
+                        start_position = {x: j, y: i};
+                    count ++;
+                }
+            }
+            matrix.push(row);
+        }
+        return {
+            matrix: matrix, 
+            start_position: start_position
+        }
+    }
+    
+    function random_int(b) {
+        return Math.floor(Math.random() * (b + 1));
+    }
+
+    function shuffle(array) {
+        var currentIndex = array.length, temporaryValue, randomIndex;
+
+        // While there remain elements to shuffle...
+        while (0 !== currentIndex) {
+            // Pick a remaining element...
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex -= 1;
+
+            // And swap it with the current element.
+            temporaryValue = array[currentIndex];
+            array[currentIndex] = array[randomIndex];
+            array[randomIndex] = temporaryValue;
+        }
+        return array;
+    }
+</script>

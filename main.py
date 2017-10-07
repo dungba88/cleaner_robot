@@ -34,7 +34,7 @@ def main():
     no_rows = 10
     no_cols = 9
     no_obs = 10
-    no_matrix = 20
+    no_matrix = 1
 
     total_elapsed_bfs = 0
     total_steps_bfs = 0
@@ -54,7 +54,7 @@ def main():
         # robot.log()
         sweeper = DFSSweeper(robot)
         sweeper.loggable = False
-        robot.loggable = False
+        robot.loggable = True
 
         start = time.time()
         sweeper.sweep()
@@ -71,11 +71,11 @@ def main():
         robot = Robot(matrix, start_position, start_direction)
         sweeper = Sweeper(robot)
         sweeper.loggable = False
-        robot.loggable = False
+        robot.loggable = True
 
-        start = time.time()
-        sweeper.sweep()
-        elapsed = time.time() - start
+        # start = time.time()
+        # sweeper.sweep()
+        # elapsed = time.time() - start
 
         total_elapsed_bfs += elapsed
         total_steps_bfs += robot.move_count

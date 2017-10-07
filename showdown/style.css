@@ -1,0 +1,27 @@
+.container {
+    margin: 10px 20px;
+    display: inline-block;
+    position: relative;
+}
+
+.container canvas {
+    border: 1px solid;
+}
+
+.pointer {
+    background: red;
+    width: 20px;
+    height: 20px;
+    margin-left: -10px;
+    margin-top: -10px;
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid black;
+}
+
+.fighter {
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    margin: 20px;
+}

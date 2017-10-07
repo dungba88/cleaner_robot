@@ -9,8 +9,6 @@ class Sweeper(object):
         self.loggable = True
 
     def sweep(self):
-        self.observed_map = {0: {0: 1}}
-
         while self.move():
             pass
 
@@ -44,9 +42,10 @@ class Sweeper(object):
     def move_with_path(self, target_path):
         for path in reversed(target_path):
             left_turns = path - self.current_direction
-            # we don't need this, but in reality turning is costly
             if left_turns < 0:
                 left_turns += 4
+            # we don't need this, but in reality turning is costly
+            # so instead of turning left 3 times, we'll turn right 1 time
             if left_turns == 3:
                 self.turn_robot_right()
             else:

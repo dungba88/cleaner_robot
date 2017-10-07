@@ -24,42 +24,6 @@ class Sweeper(object):
         self.move_with_path(target_path)
         return True
 
-    def log(self, text):
-        if self.loggable:
-            print(text)
-
-    def calculate_next_pos(self):
-        next_pos_x = self.current_position['x'] + cos(self.current_direction)
-        next_pos_y = self.current_position['y'] - sin(self.current_direction)
-        return {'x': next_pos_x, 'y': next_pos_y}
-
-    def turn_robot_left(self):
-        self.current_direction = (self.current_direction + 1) % 4
-        self.robot.turn_left()
-
-    def turn_robot_right(self):
-        self.current_direction = (self.current_direction + 3) % 4
-        self.robot.turn_right()
-
-    def move_robot(self):
-        next_pos = self.calculate_next_pos()
-
-        if not self.observed_map.get(next_pos['y'], None):
-            self.observed_map[next_pos['y']] = {}
-
-        if self.robot.move():
-            # mark the point as visited
-            self.observed_map[next_pos['y']][next_pos['x']] = 1
-            self.current_position = next_pos
-            if self.loggable:
-                self.print_map()
-            return True
-        # mark the point as inaccessible
-        self.observed_map[next_pos['y']][next_pos['x']] = -1
-        if self.loggable:
-            self.print_map()
-        return False
-
     def find_nearest_unvisited_pos(self):
         # this is just simple BFS implementation
         checked = {}
@@ -109,6 +73,42 @@ class Sweeper(object):
                 for _ in range(left_turns):
                     self.turn_robot_left()
             self.move_robot()
+
+    def move_robot(self):
+        next_pos = self.calculate_next_pos()
+
+        if not self.observed_map.get(next_pos['y'], None):
+            self.observed_map[next_pos['y']] = {}
+
+        if self.robot.move():
+            # mark the point as visited
+            self.observed_map[next_pos['y']][next_pos['x']] = 1
+            self.current_position = next_pos
+            if self.loggable:
+                self.print_map()
+            return True
+        # mark the point as inaccessible
+        self.observed_map[next_pos['y']][next_pos['x']] = -1
+        if self.loggable:
+            self.print_map()
+        return False
+
+    def log(self, text):
+        if self.loggable:
+            print(text)
+
+    def calculate_next_pos(self):
+        next_pos_x = self.current_position['x'] + cos(self.current_direction)
+        next_pos_y = self.current_position['y'] - sin(self.current_direction)
+        return {'x': next_pos_x, 'y': next_pos_y}
+
+    def turn_robot_left(self):
+        self.current_direction = (self.current_direction + 1) % 4
+        self.robot.turn_left()
+
+    def turn_robot_right(self):
+        self.current_direction = (self.current_direction + 3) % 4
+        self.robot.turn_right()
 
     def print_map(self):
         min_y = min(self.observed_map)

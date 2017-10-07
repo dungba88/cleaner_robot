@@ -66,6 +66,20 @@ class Application {
         ctx.strokeStyle = '#ff0000';
         ctx.stroke();
     }
+
+    update_target(current) {
+        let width = this.canvas.width;
+        let height = this.canvas.height;
+
+        let row_height = height / this.rows;
+        let col_width = width / this.cols;
+
+        let x = (current.x + 0.5) * col_width;
+        let y = (current.y + 0.5) * row_height;
+
+        document.getElementById('target').style.left = x+'px';
+        document.getElementById('target').style.top = y+'px';
+    }
     
     draw_grid(ctx) {
         let width = this.canvas.width;
@@ -94,6 +108,7 @@ class Robot {
 
     constructor(matrix, start_position, start_direction, app) {
         this.matrix = matrix;
+        this.start_position = {x: start_position.x, y: start_position.y};
         this.current_position = {x: start_position.x, y: start_position.y};
         this.current_direction = start_direction;
         this.loggable = false;
@@ -199,8 +214,14 @@ class Sweeper {
             return false;
         }
         this.log('found nearest unvisited position, moving there');
-        this.move_with_path(target_path, success);
+        this.update_target(target_path.current);
+        console.log(target_path.current.x, target_path.current.y);
+        this.move_with_path(target_path.path, success);
         return true;
+    }
+
+    update_target(current) {
+        this.robot.app.update_target({x: current.x + this.robot.start_position.x, y: current.y + this.robot.start_position.y});
     }
 
     find_nearest_unvisited_pos() {
@@ -414,11 +435,15 @@ function bfs(start_position, finish_check_fn, adjacent_check_fn) {
         let current = queue.shift();
         if (finish_check_fn(current)) {
             let path = [];
+            let _current = current;
             while(current.parent) {
                 path.push(current.direction);
                 current = current.parent;
             }
-            return path;
+            return {
+                path: path,
+                current: _current
+            };
         }
         let adjacents = adjacent(current);
         for(let i in adjacents) {

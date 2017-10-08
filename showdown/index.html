@@ -38,9 +38,16 @@
         
     <div class="container">
         <div id="pointer1" class="pointer"></div>
-        <div id="target" class="target"></div>
+        <div id="target1" class="target"></div>
         <canvas id="canvas1" width="400px" height="300px"></canvas>
         <div class="fighter">Sloppy BFS</div>
+    </div>
+
+    <div class="container">
+        <div id="pointer3" class="pointer"></div>
+        <div id="target2" class="target"></div>
+        <canvas id="canvas3" width="400px" height="300px"></canvas>
+        <div class="fighter">Spiral BFS</div>
     </div>
     
     <div class="container">
@@ -55,9 +62,11 @@
 <script type="text/javascript">
     let app1 = null;
     let app2 = null;
+    let app3 = null;
 
     let robot1 = null;
     let robot2 = null;
+    let robot3 = null;
 
     document.addEventListener("DOMContentLoaded", function(event) {
         document.getElementById('game').style.display = 'none';
@@ -77,11 +86,13 @@
         let obstacles = document.getElementById('obstacles').value;
         let move_time = document.getElementById('move_time').value;
 
-        app1 = new Application(rows, cols, obstacles, 'canvas1', 'pointer1');
+        app1 = new Application(rows, cols, obstacles, 'canvas1', 'pointer1', 'target1');
         app2 = new Application(rows, cols, obstacles, 'canvas2', 'pointer2');
+        app3 = new Application(rows, cols, obstacles, 'canvas3', 'pointer3', 'target2');
 
         app1.load_app();
         app2.load_app();
+        app3.load_app();
 
         let input = random_matrix(rows, cols, obstacles);
 
@@ -95,6 +106,11 @@
         robot2.move_time = move_time;
         app2.draw_obstacle(input.matrix);
 
+        app3.begin();
+        robot3 = new Robot(input.matrix, input.start_position, 3, app3);
+        robot3.move_time = move_time;
+        app3.draw_obstacle(input.matrix);
+
         document.getElementById('config').style.display = 'none';
         document.getElementById('game').style.display = 'block';
     }
@@ -104,29 +120,45 @@
 
         let sweeper1 = new Sweeper(robot1);
         let sweeper2 = new DFSSweeper(robot2);
+        let sweeper3 = new Sweeper(robot3);
+        sweeper3.spiral = true;
 
-        let app1Finished = false;
-        let app2Finished = false;
+        let finishes = 0;
+
         sweeper1.sweep(function() {
-            app1Finished = true;
-            if (!app2Finished) {
+            finishes++;
+            if (finishes == 1) {
                 document.getElementById('winner').innerHTML = 'Sloppy BFS' + '. Steps taken: ' + robot1.move_count;
-            } else {
+            } else if (finishes == 2) {
                 document.getElementById('runner_up').innerHTML = 'Sloppy BFS' + '. Steps taken: ' + robot1.move_count;
+            } else {
                 document.getElementById('btn_reset').style.display = 'block';
             }
             app1.finish();
         });
 
         sweeper2.sweep(function() {
-            app2Finished = true;
-            if (!app1Finished) {
+            finishes++;
+            if (finishes == 1) {
                 document.getElementById('winner').innerHTML = 'Backtracking DFS' + '. Steps taken: ' + robot2.move_count;
-            } else {
+            } else if (finishes == 2) {
                 document.getElementById('runner_up').innerHTML = 'Backtracking DFS' + '. Steps taken: ' + robot2.move_count;
+            } else {
                 document.getElementById('btn_reset').style.display = 'block';
             }
             app2.finish();
+        });
+
+        sweeper3.sweep(function() {
+            finishes++;
+            if (finishes == 1) {
+                document.getElementById('winner').innerHTML = 'Spiral BFS' + '. Steps taken: ' + robot3.move_count;
+            } else if (finishes == 2) {
+                document.getElementById('runner_up').innerHTML = 'Spiral BFS' + '. Steps taken: ' + robot3.move_count;
+            } else {
+                document.getElementById('btn_reset').style.display = 'block';
+            }
+            app3.finish();
         });
     }
 

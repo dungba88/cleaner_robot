@@ -1,11 +1,12 @@
 class Application {
 
-    constructor(rows, cols, obstacles, canvas_id, pointer_id) {
+    constructor(rows, cols, obstacles, canvas_id, pointer_id, target_id) {
         this.rows = rows;
         this.cols = cols;
         this.obstacles = obstacles;
         this.canvas_id = canvas_id;
         this.pointer_id = pointer_id;
+        this.target_id = target_id;
         this.canvas = null;
         this.pointer = null;
     }
@@ -78,8 +79,8 @@ class Application {
         let x = (current.x + 0.5) * col_width;
         let y = (current.y + 0.5) * row_height;
 
-        document.getElementById('target').style.left = x+'px';
-        document.getElementById('target').style.top = y+'px';
+        document.getElementById(this.target_id).style.left = x+'px';
+        document.getElementById(this.target_id).style.top = y+'px';
     }
     
     draw_grid(ctx) {
@@ -198,6 +199,7 @@ class Sweeper {
         this.observed_map = {0: {0: 1}};
         this.robot = robot;
         this.loggable = false;
+        this.spiral = false;
     }
 
     sweep(callback) {
@@ -244,7 +246,7 @@ class Sweeper {
     }
 
     find_nearest_unvisited_pos() {
-        return bfs(this.current_position, this.node_unvisited.bind(this), this.adjacent_movable.bind(this));
+        return bfs(this.current_position, this.current_direction, this.spiral, this.node_unvisited.bind(this), this.adjacent_movable.bind(this));
     }
 
     node_unvisited(node) {
@@ -440,7 +442,7 @@ function nsin(direction) {
 //     print(text)
 // print('')
 
-function bfs(start_position, finish_check_fn, adjacent_check_fn) {
+function bfs(start_position, start_direction, spiral, finish_check_fn, adjacent_check_fn) {
     let checked = {}
     let queue = []
     queue.push({
@@ -452,6 +454,8 @@ function bfs(start_position, finish_check_fn, adjacent_check_fn) {
     
     while(queue.length > 0) {
         let current = queue.shift();
+        if (current.direction != null)
+            start_direction = current.direction;
         if (finish_check_fn(current)) {
             let path = [];
             let _current = current;
@@ -464,7 +468,7 @@ function bfs(start_position, finish_check_fn, adjacent_check_fn) {
                 current: _current
             };
         }
-        let adjacents = adjacent(current);
+        let adjacents = adjacent(current, start_direction, spiral);
         for(let i in adjacents) {
             let node = adjacents[i];
             let key = node.x + '_' + node.y;
@@ -476,7 +480,33 @@ function bfs(start_position, finish_check_fn, adjacent_check_fn) {
     }
 }
 
-function adjacent(current) {
+function adjacent(current, start_direction, spiral) {
+    if (spiral) {
+        if (start_direction == 0) {
+            return [
+                {x: current.x, 'y': current.y - 1, 'direction': 1, 'parent': current},
+                {x: current.x + 1, 'y': current.y, 'direction': 0, 'parent': current},
+                {x: current.x, 'y': current.y + 1, 'direction': 3, 'parent': current},
+                {x: current.x - 1, 'y': current.y, 'direction': 2, 'parent': current}
+            ]
+        }
+        if (start_direction == 1) {
+            return [
+                {x: current.x - 1, 'y': current.y, 'direction': 2, 'parent': current},
+                {x: current.x, 'y': current.y - 1, 'direction': 1, 'parent': current},
+                {x: current.x + 1, 'y': current.y, 'direction': 0, 'parent': current},
+                {x: current.x, 'y': current.y + 1, 'direction': 3, 'parent': current}
+            ]
+        }
+        if (start_direction == 2) {
+            return [
+                {x: current.x, 'y': current.y + 1, 'direction': 3, 'parent': current},
+                {x: current.x, 'y': current.y - 1, 'direction': 1, 'parent': current},
+                {x: current.x + 1, 'y': current.y, 'direction': 0, 'parent': current},
+                {x: current.x - 1, 'y': current.y, 'direction': 2, 'parent': current}
+            ]
+        }
+    }
     return [
         {x: current.x + 1, 'y': current.y, 'direction': 0, 'parent': current},
         {x: current.x, 'y': current.y + 1, 'direction': 3, 'parent': current},

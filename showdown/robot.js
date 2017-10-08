@@ -14,6 +14,7 @@ class Application {
         this.canvas = document.getElementById(this.canvas_id);
         this.pointer = document.getElementById(this.pointer_id);
         var ctx = this.canvas.getContext('2d');
+        ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.draw_grid(ctx);
     }
 
@@ -87,7 +88,8 @@ class Application {
 
         let row_height = height / this.rows;
         let col_width = width / this.cols;
-
+        ctx.strokeStyle = '#000000';
+        
         for(let i = 1; i < this.rows; i++) {
             ctx.beginPath();
             ctx.moveTo(0, i * row_height);

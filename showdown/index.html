@@ -24,7 +24,8 @@
 
 <div id="game">
     <div>
-        <button id="btn_run" onclick="run()">Run</button>        
+        <button id="btn_run" onclick="run()">Run</button>
+        <button id="btn_reset" onclick="restart()">Create another game</button>        
     </div>
     
     <h2>
@@ -60,7 +61,15 @@
 
     document.addEventListener("DOMContentLoaded", function(event) {
         document.getElementById('game').style.display = 'none';
+        document.getElementById('btn_reset').style.display = 'none';
     });
+
+    function restart() {
+        document.getElementById('game').style.display = 'none';
+        document.getElementById('config').style.display = 'block';
+        document.getElementById('btn_reset').style.display = 'none';
+        document.getElementById('btn_run').disabled = false;
+    }
 
     function create_game() {
         let rows = document.getElementById('rows').value;
@@ -104,6 +113,7 @@
                 document.getElementById('winner').innerHTML = 'Planned BFS' + '. Steps taken: ' + robot1.move_count;
             } else {
                 document.getElementById('runner_up').innerHTML = 'Planned BFS' + '. Steps taken: ' + robot1.move_count;
+                document.getElementById('btn_reset').style.display = 'block';
             }
             app1.finish();
         });
@@ -114,6 +124,7 @@
                 document.getElementById('winner').innerHTML = 'Backtracking DFS' + '. Steps taken: ' + robot2.move_count;
             } else {
                 document.getElementById('runner_up').innerHTML = 'Backtracking DFS' + '. Steps taken: ' + robot2.move_count;
+                document.getElementById('btn_reset').style.display = 'block';
             }
             app2.finish();
         });

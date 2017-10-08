@@ -4,50 +4,71 @@
     Cleaning Robot Showdown
 </h1>
 
-<div>
-    <button id="btn_run" onclick="run()">Run</button>        
+<div id="config">
+    <div class="row">
+        <span class="label">Number of rows:</span> <input value="10" type="text" id="rows" />
+    </div>
+    <div class="row">
+        <span class="label">Number of cols:</span> <input value="10" type="text" id="cols" />
+    </div>
+    <div class="row">
+        <span class="label">Number of obstacles:</span> <input value="10" type="text" id="obstacles" />
+    </div>
+    <button onclick="create_game()">Create Game</button>
 </div>
 
-<h2>
-    Winner: <span id="winner"></span>
-</h2>
-
-<h3>
-    Runner up: <span id="runner_up"></span>
-</h3>
+<div id="game">
+    <div>
+        <button id="btn_run" onclick="run()">Run</button>        
+    </div>
     
-<div class="container">
-    <div id="pointer1" class="pointer"></div>
-    <div id="target" class="target"></div>
-    <canvas id="canvas1" width="400px" height="300px"></canvas>
-    <div class="fighter">Planned BFS</div>
-</div>
-
-<div class="container">
-    <div id="pointer2" class="pointer"></div>
-    <canvas id="canvas2" width="400px" height="300px"></canvas>
-    <div class="fighter">Backtracking DFS</div>
+    <h2>
+        Winner: <span id="winner"></span>
+    </h2>
+    
+    <h3>
+        Runner up: <span id="runner_up"></span>
+    </h3>
+        
+    <div class="container">
+        <div id="pointer1" class="pointer"></div>
+        <div id="target" class="target"></div>
+        <canvas id="canvas1" width="400px" height="300px"></canvas>
+        <div class="fighter">Planned BFS</div>
+    </div>
+    
+    <div class="container">
+        <div id="pointer2" class="pointer"></div>
+        <canvas id="canvas2" width="400px" height="300px"></canvas>
+        <div class="fighter">Backtracking DFS</div>
+    </div>
 </div>
 
 <script src="robot.js" type="text/javascript"></script>
 
 <script type="text/javascript">
-    ROWS = 10;
-    COLS = 10;
-    OBSTACLES = 10;
-
-    let app1 = new Application(ROWS, COLS, OBSTACLES, 'canvas1', 'pointer1');
-
-    let app2 = new Application(ROWS, COLS, OBSTACLES, 'canvas2', 'pointer2');
+    let app1 = null;
+    let app2 = null;
 
     let robot1 = null;
     let robot2 = null;
 
     document.addEventListener("DOMContentLoaded", function(event) {
+        document.getElementById('game').style.display = 'none';
+    });
+
+    function create_game() {
+        let rows = document.getElementById('rows').value;
+        let cols = document.getElementById('cols').value;
+        let obstacles = document.getElementById('obstacles').value;
+
+        app1 = new Application(rows, cols, obstacles, 'canvas1', 'pointer1');
+        app2 = new Application(rows, cols, obstacles, 'canvas2', 'pointer2');
+
         app1.load_app();
         app2.load_app();
 
-        let input = random_matrix(ROWS, COLS, OBSTACLES);
+        let input = random_matrix(rows, cols, obstacles);
 
         app1.begin();
         robot1 = new Robot(input.matrix, input.start_position, 3, app1);
@@ -56,7 +77,10 @@
         app2.begin();
         robot2 = new Robot(input.matrix, input.start_position, 3, app2);
         app2.draw_obstacle(input.matrix);
-    });
+
+        document.getElementById('config').style.display = 'none';
+        document.getElementById('game').style.display = 'block';
+    }
 
     function run() {
         document.getElementById('btn_run').disabled = true;

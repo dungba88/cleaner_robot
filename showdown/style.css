@@ -35,17 +35,20 @@
     position: absolute;
     border-radius: 50%;
     border: 1px solid black;
-    -webkit-animation: blinking 1000ms ease-in-out;
-    -webkit-animation-iteration-count: infinite;
+    animation: blinking 1000ms ease-in-out;
+    animation-iteration-count: infinite;
 }
 
-@-webkit-keyframes blinking {
+@keyframes blinking {
     0% {background: transparent}
     100% {background: blue}
 }
 
-#div2blink{
-    -webkit-transition: backgroundColor 0.05s ease-in-out;
-    -ms-transition:     backgroundColor 0.05s ease-in-out;
-    transition:         backgroundColor 0.05s ease-in-out;
+.row {
+    margin: 10px 0;
+}
+
+.label {
+    display: inline-block;
+    width: 150px;
 }

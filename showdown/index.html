@@ -40,7 +40,7 @@
         <div id="pointer1" class="pointer"></div>
         <div id="target" class="target"></div>
         <canvas id="canvas1" width="400px" height="300px"></canvas>
-        <div class="fighter">Planned BFS</div>
+        <div class="fighter">Sloppy BFS</div>
     </div>
     
     <div class="container">
@@ -110,9 +110,9 @@
         sweeper1.sweep(function() {
             app1Finished = true;
             if (!app2Finished) {
-                document.getElementById('winner').innerHTML = 'Planned BFS' + '. Steps taken: ' + robot1.move_count;
+                document.getElementById('winner').innerHTML = 'Sloppy BFS' + '. Steps taken: ' + robot1.move_count;
             } else {
-                document.getElementById('runner_up').innerHTML = 'Planned BFS' + '. Steps taken: ' + robot1.move_count;
+                document.getElementById('runner_up').innerHTML = 'Sloppy BFS' + '. Steps taken: ' + robot1.move_count;
                 document.getElementById('btn_reset').style.display = 'block';
             }
             app1.finish();

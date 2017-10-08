@@ -117,7 +117,7 @@ class Robot {
         this.move_count = 0;
         this.__visited_position = {};
         this.app.update_position(this, true);
-        this.move_time = 200;
+        this.move_time = 100;
     }
 
     turn_left() {

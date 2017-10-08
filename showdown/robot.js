@@ -117,6 +117,7 @@ class Robot {
         this.move_count = 0;
         this.__visited_position = {};
         this.app.update_position(this, true);
+        this.move_time = 200;
     }
 
     turn_left() {
@@ -148,7 +149,7 @@ class Robot {
         return new Promise(resolve => {
             setTimeout(function() {
                 resolve();
-            }, 200);
+            }, this.move_time);
         });
     }
 

@@ -118,6 +118,7 @@ class Robot {
         this.loggable = false;
         this.app = app;
         this.move_count = 0;
+        this.turn_count = 0;
         this.__visited_position = {};
         this.app.update_position(this, true);
         this.move_time = 100;

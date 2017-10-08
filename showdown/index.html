@@ -128,9 +128,9 @@
         sweeper1.sweep(function() {
             finishes++;
             if (finishes == 1) {
-                document.getElementById('winner').innerHTML = 'Sloppy BFS' + '. Steps taken: ' + robot1.move_count;
+                document.getElementById('winner').innerHTML = 'Sloppy BFS' + '. Steps taken: ' + robot1.move_count + '. Turns taken: ' + robot1.turn_count;
             } else if (finishes == 2) {
-                document.getElementById('runner_up').innerHTML = 'Sloppy BFS' + '. Steps taken: ' + robot1.move_count;
+                document.getElementById('runner_up').innerHTML = 'Sloppy BFS' + '. Steps taken: ' + robot1.move_count + '. Turns taken: ' + robot1.turn_count;
             } else {
                 document.getElementById('btn_reset').style.display = 'block';
             }
@@ -140,9 +140,9 @@
         sweeper2.sweep(function() {
             finishes++;
             if (finishes == 1) {
-                document.getElementById('winner').innerHTML = 'Backtracking DFS' + '. Steps taken: ' + robot2.move_count;
+                document.getElementById('winner').innerHTML = 'Backtracking DFS' + '. Steps taken: ' + robot2.move_count + '. Turns taken: ' + robot2.turn_count;
             } else if (finishes == 2) {
-                document.getElementById('runner_up').innerHTML = 'Backtracking DFS' + '. Steps taken: ' + robot2.move_count;
+                document.getElementById('runner_up').innerHTML = 'Backtracking DFS' + '. Steps taken: ' + robot2.move_count + '. Turns taken: ' + robot2.turn_count;
             } else {
                 document.getElementById('btn_reset').style.display = 'block';
             }
@@ -152,9 +152,9 @@
         sweeper3.sweep(function() {
             finishes++;
             if (finishes == 1) {
-                document.getElementById('winner').innerHTML = 'Spiral BFS' + '. Steps taken: ' + robot3.move_count;
+                document.getElementById('winner').innerHTML = 'Spiral BFS' + '. Steps taken: ' + robot3.move_count + '. Turns taken: ' + robot3.turn_count;
             } else if (finishes == 2) {
-                document.getElementById('runner_up').innerHTML = 'Spiral BFS' + '. Steps taken: ' + robot3.move_count;
+                document.getElementById('runner_up').innerHTML = 'Spiral BFS' + '. Steps taken: ' + robot3.move_count + '. Turns taken: ' + robot3.turn_count;
             } else {
                 document.getElementById('btn_reset').style.display = 'block';
             }

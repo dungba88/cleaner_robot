@@ -501,9 +501,9 @@ function adjacent(current, start_direction, spiral) {
         if (start_direction == 2) {
             return [
                 {x: current.x, 'y': current.y + 1, 'direction': 3, 'parent': current},
+                {x: current.x - 1, 'y': current.y, 'direction': 2, 'parent': current},
                 {x: current.x, 'y': current.y - 1, 'direction': 1, 'parent': current},
-                {x: current.x + 1, 'y': current.y, 'direction': 0, 'parent': current},
-                {x: current.x - 1, 'y': current.y, 'direction': 2, 'parent': current}
+                {x: current.x + 1, 'y': current.y, 'direction': 0, 'parent': current}
             ]
         }
     }

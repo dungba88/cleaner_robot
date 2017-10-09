@@ -35,6 +35,10 @@
     <h3>
         Runner up: <span id="runner_up"></span>
     </h3>
+
+    <h4>
+        2nd runner up: <span id="2nd_runner_up"></span>
+    </h4>
         
     <div class="container">
         <div id="pointer1" class="pointer"></div>
@@ -132,7 +136,8 @@
             } else if (finishes == 2) {
                 document.getElementById('runner_up').innerHTML = 'Sloppy BFS' + '. Steps taken: ' + robot1.move_count + '. Turns taken: ' + robot1.turn_count;
             } else {
-                document.getElementById('btn_reset').style.display = 'block';
+                document.getElementById('2nd_runner_up').innerHTML = 'Sloppy BFS' + '. Steps taken: ' + robot1.move_count + '. Turns taken: ' + robot1.turn_count;
+                document.getElementById('btn_reset').style.display = '';
             }
             app1.finish();
         });
@@ -144,7 +149,8 @@
             } else if (finishes == 2) {
                 document.getElementById('runner_up').innerHTML = 'Backtracking DFS' + '. Steps taken: ' + robot2.move_count + '. Turns taken: ' + robot2.turn_count;
             } else {
-                document.getElementById('btn_reset').style.display = 'block';
+                document.getElementById('2nd_runner_up').innerHTML = 'Backtracking DFS' + '. Steps taken: ' + robot2.move_count + '. Turns taken: ' + robot2.turn_count;
+                document.getElementById('btn_reset').style.display = '';
             }
             app2.finish();
         });
@@ -156,7 +162,8 @@
             } else if (finishes == 2) {
                 document.getElementById('runner_up').innerHTML = 'Spiral BFS' + '. Steps taken: ' + robot3.move_count + '. Turns taken: ' + robot3.turn_count;
             } else {
-                document.getElementById('btn_reset').style.display = 'block';
+                document.getElementById('2nd_runner_up').innerHTML = 'Spiral BFS' + '. Steps taken: ' + robot3.move_count + '. Turns taken: ' + robot3.turn_count;
+                document.getElementById('btn_reset').style.display = '';
             }
             app3.finish();
         });

@@ -63,8 +63,7 @@ class Application {
         else
             ctx.lineTo(x, y);
         
-        this.pointer.style.left = x+'px';
-        this.pointer.style.top = y+'px';
+        this.pointer.style.transform = 'translate('+x+'px, '+y+'px)';
         ctx.strokeStyle = '#ff0000';
         ctx.stroke();
     }

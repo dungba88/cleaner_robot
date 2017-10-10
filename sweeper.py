@@ -7,6 +7,7 @@ class Sweeper(object):
         self.observed_map = {0: {0: 1}}
         self.robot = robot
         self.loggable = True
+        self.spiral = True
 
     def sweep(self):
         while self.move():
@@ -23,7 +24,7 @@ class Sweeper(object):
         return True
 
     def find_nearest_unvisited_pos(self):
-        return bfs(self.current_position, self.node_unvisited, self.adjacent_movable)
+        return bfs(self.current_position, self.current_direction, self.node_unvisited, self.adjacent_movable, self.spiral)
 
     def node_unvisited(self, node):
         map_node = self.get_node_from_map(node)

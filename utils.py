@@ -30,14 +30,16 @@ def print_observed_map(sweeper):
         print(text)
     print('')
 
-def bfs(start_position, finish_check_fn, adjacent_check_fn):
+def bfs(start_position, start_direction, finish_check_fn, adjacent_check_fn, spiral):
     # this is just simple BFS implementation
     checked = {}
     queue = []
-    queue.append({'x': start_position['x'], 'y': start_position['y'], 'd': None, 'parent': None})
+    queue.append({'x': start_position['x'], 'y': start_position['y'], 'direction': None, 'parent': None})
 
     while queue:
         current = queue.pop(0)
+        if current['direction'] is not None:
+            start_direction = current['direction']
         finished = finish_check_fn(current)
         if finished:
             path = []
@@ -45,14 +47,36 @@ def bfs(start_position, finish_check_fn, adjacent_check_fn):
                 path.append(current['direction'])
                 current = current['parent']
             return path
-        for node in adjacent(current):
+        for node in adjacent(current, start_direction, spiral):
             key = str(node['x']) + '_' + str(node['y'])
             if not checked.get(key, None) \
                     and adjacent_check_fn(node):
                 checked[key] = 1
                 queue.append(node)
 
-def adjacent(current):
+def adjacent(current, start_direction, spiral):
+    if spiral:
+        if start_direction == 0:
+            return [
+                {'x': current['x'], 'y': current['y'] - 1, 'direction': 1, 'parent': current},
+                {'x': current['x'] + 1, 'y': current['y'], 'direction': 0, 'parent': current},
+                {'x': current['x'], 'y': current['y'] + 1, 'direction': 3, 'parent': current},
+                {'x': current['x'] - 1, 'y': current['y'], 'direction': 2, 'parent': current}
+            ]
+        if start_direction == 1:
+            return [
+                {'x': current['x'] - 1, 'y': current['y'], 'direction': 2, 'parent': current},
+                {'x': current['x'], 'y': current['y'] - 1, 'direction': 1, 'parent': current},
+                {'x': current['x'] + 1, 'y': current['y'], 'direction': 0, 'parent': current},
+                {'x': current['x'], 'y': current['y'] + 1, 'direction': 3, 'parent': current}
+            ]
+        if start_direction == 2:
+            return [
+                {'x': current['x'], 'y': current['y'] + 1, 'direction': 3, 'parent': current},
+                {'x': current['x'] - 1, 'y': current['y'], 'direction': 2, 'parent': current},
+                {'x': current['x'], 'y': current['y'] - 1, 'direction': 1, 'parent': current},
+                {'x': current['x'] + 1, 'y': current['y'], 'direction': 0, 'parent': current}
+            ]
     return [
         {'x': current['x'] + 1, 'y': current['y'], 'direction': 0, 'parent': current},
         {'x': current['x'], 'y': current['y'] + 1, 'direction': 3, 'parent': current},

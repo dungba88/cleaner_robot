@@ -2,7 +2,7 @@
 
 This is simple cleaning robot algorithm written in Python. It assumes the following:
 
-- Map can be interpreted as 2-d grid, with obstacles as inaccessible points in the map.
+- Map can be interpreted as 2-d grid, with obstacles as obstructed points in the map.
 - Obstacles can be arbitrary, both in quantity and position.
 - The algorithm knows nothing about the surrounding environment.
 - The robot only provides 3 API: turn_left, turn_right (rotate the looking direction) and move (move ahead 1 point)
@@ -17,13 +17,13 @@ The algorithm (sweeper.py) works as follow:
 2. Find the nearest unvisited point in observed map using Breadth-First Search
 3. If cannot find, algorithm stops, and the accessible part of the room has been cleaned. Otherwise go to step 4
 4. Move the robot to the position found in step 2, with each step updating the current position.
-5. If it cannot move to the desired position, mark the position as inaccessible in observed map, otherwise mark it as visited.
+5. If it cannot move to the desired position, mark the position as obstructed in observed map, otherwise mark it as visited.
 5. Go back to step 2
 
 # how to use
 
 ```python
-# matrix is a 2d array, with 0 indicating accessible, and anything else indicating inaccessible
+# matrix is a 2d array, with 0 indicating unobstructed, and anything else indicating obstructed
 robot = Robot(matrix, start_position, start_direction)
 sweeper = Sweeper(robot)
 sweeper.sweep()

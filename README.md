@@ -45,6 +45,6 @@ sweeper.spiral = True
 
 # demo
 
-A demonstration can be found in http://jenova.dungba.org/cleaner/showdown
+A demonstration can be found in http://jenova.dungba.org/cleaner/showdown (Note: the link is down because I haven't put money into the VPS provider for awhile :) )
 
 The code for the demonstration is placed under `showdown/` folder. It will compare the efficiency of different algorithms in randomly generated matrices.

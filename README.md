@@ -45,6 +45,6 @@ sweeper.spiral = True
 
 # demo
 
-A demonstration can be found in https://jsfiddle.net/961uhtcy/
+A demonstration can be found in https://dungba88.github.io/cleaner_robot/showdown/
 
 The code for the demonstration is placed under `showdown/` folder. It will compare the efficiency of different algorithms in randomly generated matrices.
